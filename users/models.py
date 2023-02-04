@@ -38,7 +38,8 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField(default=timezone.now)
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = [ email, first_name, last_name , phone_number ]
+    # I will check the REQUIRED_FIELDS on form, to solve the add create super error.
+    REQUIRED_FIELDS = [ ]
 
     objects = CustomUserManager()
 
