@@ -34,7 +34,7 @@
                                 <div class="row">
                                     <div class="col-12 text-dark">
                                         <span>
-                                            {{ user.first_name }} {{ user.last_name }} {% if project_exists %}{{ user.team_role|lower }}{% endif %}
+                                            {{ user.first_name }} {{ user.last_name }} {% if user.team_role == "Admin" %}{{ user.team_role|lower }}{% endif %}
                                         </span>
                                     </div>
                                     <div class="col-12 text-muted">
