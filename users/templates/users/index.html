@@ -1,9 +1,32 @@
-{% if user_list %}
-    <ul>
-    {% for user in user_list %}
-        <li><a href="/">{{ user }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No users are available.</p>
-{% endif %}
+{% extends 'base.html' %}
+{% block title %}Home{% endblock %}
+{% block header %}List page{% endblock %}
+{% block body %}
+<div>
+    {% if user_list %}
+        {% with pre_text="You have " total=user_list.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
+            {% include "base_header.html" with title="Team members" description=pre_text|add:total|add:post_text|add:pluralize_text %}
+        {% endwith %}
+        <div>
+        {% for user in user_list %}
+          <a href="/">
+                <div>
+                    <img />
+                </div>
+                <div>
+                    <div>
+                        <span>
+                            {{ user.first_name }} {{ user.last_name }} {% if project_exists %}{{ user.team_role|lower }}{% endif %}
+                        </span>
+                        <span>{{ user.phone_number }}</span>
+                        <span>{{ user.email }}</span>
+                    </div>
+                </div>
+            </a>
+        {% endfor %}
+        </div>
+    {% else %}
+        <p>No users are available.</p>
+    {% endif %}
+</div>
+{% endblock %} 
