@@ -32,17 +32,17 @@
                         <div class="col-11">
                             <div class="container">
                                 <div class="row">
-                                    <div class="col-12 text-dark">
+                                    <div class="col-12 text fs-5 text-dark">
                                         <span>
-                                            {{ user.first_name }} {{ user.last_name }} {% if user.team_role == "Admin" %}{{ user.team_role|lower }}{% endif %}
+                                            {{ user.first_name }} {{ user.last_name }} {% if user.team_role == "Admin" %}({{ user.team_role|lower }}){% endif %}
                                         </span>
                                     </div>
-                                    <div class="col-12 text-muted">
+                                    <div class="col-12 text fs-6 text-muted">
                                         <span>
                                             {{ user.phone_number }}
                                         </span>
                                     </div>
-                                    <div class="col-12 text-muted">
+                                    <div class="col-12 fs-6 text text-muted">
                                         <span>{{ user.email }}</span>
                                     </div>
                                 </div>
