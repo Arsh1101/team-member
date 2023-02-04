@@ -25,7 +25,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
         (ADMIN, "Can delete members"),
         (REGULAR, "Can't delete members"),
         ]
-    team_roll = models.CharField("Team Roll",
+    team_role = models.CharField("Team Role",
         # Automatically set the max value of the keys, to max_length.
         max_length=max([len(i[0]) for i in TEAM_ROLLS]),
         choices=TEAM_ROLLS,
