@@ -9,4 +9,4 @@ class IndexView(generic.ListView):
     # By defult I used order_by added date, we can change it to show in differente order.
     # I filtered de activated users, this way super users (or in a future team admins),
     #   can hide a member for any reason.
-    queryset = CustomUser.objects.filter(is_active=True).order_by('-date_joined').values_list('first_name', 'last_name', 'team_role', 'email', 'phone_number')
+    queryset = CustomUser.objects.filter(is_active=True, is_staff=False).order_by('-date_joined').values_list('first_name', 'last_name', 'team_role', 'email', 'phone_number')
