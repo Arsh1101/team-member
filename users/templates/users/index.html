@@ -2,28 +2,56 @@
 {% block title %}Home{% endblock %}
 {% block header %}List page{% endblock %}
 {% block body %}
-<div>
+<div class="container bg-white">
     {% if user_list %}
-        {% with pre_text="You have " total=user_list.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
+        {% comment %} {% with pre_text="You have " total=user_list.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
             {% include "base_header.html" with title="Team members" description=pre_text|add:total|add:post_text|add:pluralize_text %}
-        {% endwith %}
-        <div>
-        {% for user in user_list %}
-          <a href="/">
-                <div>
-                    <img />
-                </div>
-                <div>
-                    <div>
-                        <span>
-                            {{ user.first_name }} {{ user.last_name }} {% if project_exists %}{{ user.team_role|lower }}{% endif %}
-                        </span>
-                        <span>{{ user.phone_number }}</span>
-                        <span>{{ user.email }}</span>
+        {% endwith %} {% endcomment %}
+        <div class="row align-items-center">
+            <div class="col-6 text-start">
+                <span class="text-muted">
+                    Login Info
+                </span>
+            </div>
+            <div class="col-6 text-end">
+                <a href="/" class="text-decoration-none text-primary display-6">
+                    <i class="bi bi-plus"></i>
+                </span>
+            </div>
+        </div>
+        <div class="row">
+            {% for user in user_list %}
+            <a href="/" class="col-lg-4 col-md-6 col-12 text-decoration-none">
+                <div class="container border-top">
+                    <div class="row align-items-center text-center">
+                        <div class="col-1">
+                            <span class="text-muted display-2">
+                                <i class="bi-lg bi-file-person-fill"></i>
+                            </span>
+                        </div>
+                        <div class="col-11">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 text-dark">
+                                        <span>
+                                            {{ user.first_name }} {{ user.last_name }} {% if project_exists %}{{ user.team_role|lower }}{% endif %}
+                                        </span>
+                                    </div>
+                                    <div class="col-12 text-muted">
+                                        <span>
+                                            {{ user.phone_number }}
+                                        </span>
+                                    </div>
+                                    <div class="col-12 text-muted">
+                                        <span>{{ user.email }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </a>
-        {% endfor %}
+            {% endfor %}
         </div>
     {% else %}
         <p>No users are available.</p>
