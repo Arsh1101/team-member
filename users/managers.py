@@ -13,11 +13,15 @@ class CustomUserManager(BaseUserManager):
         if not email:
             raise ValueError("The Email must be set")
         email = self.normalize_email(email)
-        user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, team_role= team_role, **extra_fields)
-        #Temprorary value, brfore create a send a random password service.
+        # Used this value for super user or any other empty team_role:
+        if team_role:
+            user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, team_role= team_role, **extra_fields)
+        else:
+            user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, **extra_fields)
+        # Temprorary value, brfore create a send a random password service.
         password = "temp"
         user.set_password(password)
-        user.save()
+        
         return user
     
     def create_superuser(self, email, password, **extra_fields):
