@@ -19,9 +19,10 @@ class CustomUserManager(BaseUserManager):
         else:
             user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, **extra_fields)
         # Temprorary value, brfore create a send a random password service.
-        password = "temp"
+        if not password:
+            password = "temp1234"
         user.set_password(password)
-        
+        user.save()
         return user
     
     def create_superuser(self, email, password, **extra_fields):
