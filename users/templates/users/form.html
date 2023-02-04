@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Add member{% endblock %}
+{% block header %}Add page{% endblock %}
+{% block body %}
+<div class="container bg-white">
+    {% include "base_header.html" with title="Add a team member" description="Set email, location and role." %}
+    <form class="row fs-6" method="post">
+        {% csrf_token %}
+        {% for field in form.visible_fields  %}
+        <div class="col-lg-3 col-md-6 col-12 py-3">
+            {% if field.auto_id == "id_team_role" %}
+            <b>{{ field.label_tag }}</b>
+            {% endif %}
+            {{ field.errors }}
+            {{ field }}
+        </div>
+        {% endfor %}
+        <div class="col-12 border">
+            <div class="container">
+                <div class="row py-3">
+                    <div class="col-6 text-start">
+                        <button class="button border rounded-1 py-2 px-4 bg-white text-danger" type="submit">Delete</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
