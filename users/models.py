@@ -1,7 +1,7 @@
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.db import models
 from django.utils import timezone
-
+from phonenumber_field.modelfields import PhoneNumberField
 from .managers import CustomUserManager
 
 
@@ -12,7 +12,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField("First name", max_length=150)
     last_name = models.CharField("Last name", max_length=150)
     # Phone numbers could be unique too, but for now, is not.
-    phone_number = models.PhoneNumberField("Phone number", null=False, blank=False)
+    phone_number = PhoneNumberField("Phone number", null=False, blank=False)
     # I decided to use choices for team roles.
     # The other option was the Boolean field.
     # I think 'choices' is a better approach.
