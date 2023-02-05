@@ -17,5 +17,5 @@ class IndexView(generic.ListView):
 
 class AddMemberView(generic.CreateView):
     form_class = CustomUserCreationForm
-    success_url = reverse_lazy("")
+    success_url = reverse_lazy("users:index")
     template_name = "users/form.html"
