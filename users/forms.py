@@ -83,8 +83,6 @@ class CustomUserEditForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         super(CustomUserEditForm, self).__init__(*args, **kwargs)
 
-        #password
-
         TEAM_ROLLS = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLLS[::-1]]
         widget_team_roll = forms.RadioSelect(attrs={ 'class': 'form-check' })
         self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_roll, choices=TEAM_ROLLS, initial=TEAM_ROLLS[0], required=True)
