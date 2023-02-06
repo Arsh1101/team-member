@@ -3,6 +3,23 @@ from django import forms
 from .models import CustomUser
 import secrets
 import string
+from django.core.mail import EmailMessage, get_connection
+from django.conf import settings
+
+# I have to copy the code here, later!
+def generate_password():
+    pass
+
+
+def send_email_password(first_name, user_email, password):
+    with get_connection(host=settings.EMAIL_HOST, port=settings.EMAIL_PORT,  
+                        username=settings.EMAIL_HOST_USER, password=settings.EMAIL_HOST_PASSWORD, 
+                        use_tls=settings.EMAIL_USE_TLS) as connection:
+         subject = "Team member password"
+         email_from = settings.EMAIL_HOST_USER
+         recipient_list = [user_email, ]
+         message = first_name + ". This '" + password + "' is your password.\nPlease change your password as soon as possible." 
+         EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -48,6 +65,11 @@ class AutoGenPassCustomUserCreationForm(CustomUserCreationForm):
         instance.set_password(password)
         if commit:
             instance.save()
+            # Arsh warrning:
+            # send_email_password(instance.first_name, instance.email, password)
+            # Google do not allow me set my 'allow less secure ...'
+            # It was extra work to do, so I decided to done the job first then retrun back to it.
+            print("USER PASSWORD -> " + password)
         return instance
 
 

@@ -42,6 +42,17 @@ INSTALLED_APPS = [
     'phonenumber_field',
 ]
 
+# Email config:
+# Arshia warrning: if you want to app work, fill these parameters first.
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.yourserver.com'
+# In production it's better to use TLS.
+EMAIL_USE_TLS = False
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+EMAIL_HOST_USER = 'your@djangoapp.com'
+EMAIL_HOST_PASSWORD = 'your password'
+
 # I added this line to use the custom user model.
 AUTH_USER_MODEL = "users.CustomUser"
 
