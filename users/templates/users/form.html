@@ -27,8 +27,8 @@ Edit page
             {% if field.auto_id == "id_team_role" %}
             <b>{{ field.label_tag }}</b>
             {% endif %}
-            {{ field.errors }}
             {{ field }}
+            <span class="text-danger">{{ field.errors }}</span>
         </div>
         {% endfor %}
         <div class="col-12">

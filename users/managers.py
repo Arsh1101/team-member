@@ -18,9 +18,6 @@ class CustomUserManager(BaseUserManager):
             user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, team_role= team_role, **extra_fields)
         else:
             user = self.model(email=email, first_name=first_name, last_name=last_name , phone_number=phone_number, **extra_fields)
-        # Temprorary value, brfore create a send a random password service.
-        if not password:
-            password = "temp1234"
         user.set_password(password)
         user.save()
         return user
