@@ -10,7 +10,7 @@
             </a>
         </div>
         <div class="col-6 text-end">
-            <a href="/add" class="text-decoration-none text-primary display-5">
+            <a href="{% url 'users:add' %}" class="text-decoration-none text-primary display-5">
                 <i class="bi bi-plus"></i>
             </a>
         </div>
@@ -21,7 +21,7 @@
     {% endwith %}
     <div class="row">
         {% for user in user_list %}
-        <a href="/" class="col-lg-4 col-md-6 col-12 text-decoration-none">
+        <a href="{% url 'users:edit' user.id %}" class="col-lg-4 col-md-6 col-12 text-decoration-none">
             <div class="container border-top">
                 <div class="row align-items-center text-center my-2">
                     <div class="col-1">

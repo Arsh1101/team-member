@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Delete member{% endblock %}
+{% block header %}Delete page{% endblock %}
+{% block body %}
+<div class="container bg-white">
+    {% include "base_header.html" with title="Confirm delete member" description="Please confirm your deletion." %}
+    <form class="row fs-6" method="post">
+        {% csrf_token %}
+        <div class="col-12">
+            <p>Are you sure you want to remove <b>{{ object.first_name }} {{ object.last_name }}</b> with the <b>{{ object.email }}</b> username, membership permanently?</p>
+        </div>
+        <div class="col-12">
+            <div class="container">
+                <div class="row py-3">
+                    <div class="col-6 text-start">
+                        <button class="button border rounded-1 py-2 px-4 bg-white text-dark" type="button" onclick="location.href='{% url 'users:index' %}';">No</button>
+                    </div>
+                    <div class="col-6 text-end">
+                        <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

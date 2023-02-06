@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
-{% block title %}Add member{% endblock %}
-{% block header %}Add page{% endblock %}
+{% block title %}
+{% if '/add' in request.path %}
+Add member
+{% else %}
+Edit member
+{% endif %}
+{% endblock %}
+{% block header %}
+{% if '/add' in request.path %}
+Add page
+{% else %}
+Edit page
+{% endif %}
+{% endblock %}
 {% block body %}
 <div class="container bg-white">
+    {% if '/add' in request.path %}
     {% include "base_header.html" with title="Add a team member" description="Set email, location and role." %}
+    {% else %}
+    {% include "base_header.html" with title="Edit a team member" description="Edit email, location and role." %}
+    {% endif %}
     <form class="row fs-6" method="post">
         {% csrf_token %}
         {% for field in form.visible_fields  %}
@@ -15,15 +31,21 @@
             {{ field }}
         </div>
         {% endfor %}
-        <div class="col-12 border">
+        <div class="col-12">
             <div class="container">
                 <div class="row py-3">
+                    {% if 'add' in request.path and True %}
+                    <div class="col-12 text-end">
+                        <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
+                    </div>
+                    {% else %}
                     <div class="col-6 text-start">
-                        <button class="button border rounded-1 py-2 px-4 bg-white text-danger" type="submit">Delete</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-white text-danger" type="button" onclick="location.href='{% url 'users:delete' object.id %}';">Delete</button>
                     </div>
                     <div class="col-6 text-end">
                         <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
