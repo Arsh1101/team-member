@@ -18,7 +18,11 @@
         </div>
     </div>
     {% if user_list %}
-    {% with pre_text="You have " total=user_list.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
+    {% comment %} This code did not work when use paginator. {% endcomment %}
+    {% comment %} {% with pre_text="You have " total=user_list.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
+        {% include "base_header.html" with title="Team members" description=pre_text|add:total|add:post_text|add:pluralize_text %}
+    {% endwith %} {% endcomment %}
+    {% with pre_text="You have " total=page_obj.paginator.count|stringformat:"s" post_text=" team member" pluralize_text=total|pluralize|add:"." %}
         {% include "base_header.html" with title="Team members" description=pre_text|add:total|add:post_text|add:pluralize_text %}
     {% endwith %}
     <div class="row">
@@ -55,6 +59,31 @@
         </a>
         {% endfor %}
     </div>
+    {% if is_paginated %}
+    <div class="row">
+        <div class="col-12">
+            <ul class="pagination d-flex justify-content-center fs-3">
+                {% if page_obj.has_previous %}
+                  <li class="border p-1"><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                {% else %}
+                  <li class="border p-1 disabled"><span>&laquo;</span></li>
+                {% endif %}
+                {% for i in paginator.page_range %}
+                  {% if page_obj.number == i %}
+                    <li class="border p-1 active"><span>{{ i }} <span class="sr-only"></span></span></li>
+                  {% else %}
+                    <li class="border p-1"><a href="?page={{ i }}">{{ i }}</a></li>
+                  {% endif %}
+                {% endfor %}
+                {% if page_obj.has_next %}
+                  <li class="border p-1"><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                {% else %}
+                  <li class="border p-1 disabled"><span>&raquo;</span></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
     {% else %}
     <div class="row">
         <div class="col-12">
