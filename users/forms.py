@@ -41,7 +41,9 @@ class CustomUserCreationForm(UserCreationForm):
                 visible.field.widget.attrs['class'] = 'form-control'
                 visible.field.widget.attrs['placeholder'] = visible.field.label
 
-
+# AT the first time I did not use password change.
+# To implement the password change I created a new class.
+# I thought this code is cleaner and easier to read.
 class AutoGenPassCustomUserCreationForm(CustomUserCreationForm):
 
     def __init__(self, *args, **kwargs):

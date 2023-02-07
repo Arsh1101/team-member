@@ -45,7 +45,7 @@ Edit page
                     {% comment %} Regular user can change his/her own password. {% endcomment %}
                     {% if object.email == user.email %}
                     <div class="col-6 text-center">
-                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='/';">Change password</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='{% url 'users:change_password' %}';">Change password</button>
                     </div>
                     <div class="col-6 text-center">
                         <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
@@ -70,7 +70,7 @@ Edit page
                     {% else %}
                     {% comment %} Admin user can change his/her own password. {% endcomment %}
                     <div class="col-4 text-center">
-                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='/';">Change password</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='{% url 'users:change_password' %}';">Change password</button>
                     </div>
                     {% endif %}
                     {% endif %}

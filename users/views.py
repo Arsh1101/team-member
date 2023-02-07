@@ -2,6 +2,11 @@ from .models import CustomUser
 from django.views import generic
 from django.urls import reverse_lazy
 from .forms import CustomUserCreationForm, CustomUserEditForm, AutoGenPassCustomUserCreationForm
+#
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
+from django.shortcuts import render, redirect
 
 
 class IndexView(generic.ListView):
@@ -38,3 +43,20 @@ class DeleteMemberView(generic.DeleteView):
     model = CustomUser
     success_url = reverse_lazy("users:index")
     template_name = "users/delete.html"
+
+
+def change_password(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important!
+            messages.success(request, 'Your password was successfully updated!')
+            return redirect('/')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+    return render(request, 'accounts/change_password.html', {
+        'form': form
+    })
