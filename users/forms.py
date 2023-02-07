@@ -8,7 +8,8 @@ from django.conf import settings
 
 # I have to copy the code here, later!
 def generate_password():
-    pass
+    alphabet = string.ascii_letters + string.digits
+    return ''.join(secrets.choice(alphabet) for i in range(8))
 
 
 def send_email_password(first_name, user_email, password):
@@ -63,8 +64,7 @@ class AutoGenPassCustomUserCreationForm(CustomUserCreationForm):
     
     def save(self, commit=True):
         instance = super().save(commit=False)
-        alphabet = string.ascii_letters + string.digits
-        password = ''.join(secrets.choice(alphabet) for i in range(8))
+        password = generate_password()
         instance.set_password(password)
         if commit:
             instance.save()

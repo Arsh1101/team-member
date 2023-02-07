@@ -1,7 +1,7 @@
 from .models import CustomUser
 from django.views import generic
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, CustomUserEditForm, AutoGenPassCustomUserCreationForm
+from .forms import CustomUserCreationForm, CustomUserEditForm, AutoGenPassCustomUserCreationForm, generate_password
 #
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -61,6 +61,16 @@ def change_password(request):
     return render(request, 'accounts/change_password.html', {
         'form': form
     })
+
+
+def reset_password(request, pk):
+    tempUser = CustomUser.objects.filter(id=pk).first()
+    password = generate_password()
+    tempUser.set_password(password)
+    tempUser.save()
+    # WARNING: The main idea is send 'password' to email of the user
+    print(tempUser.email + " new password is : " + password)
+    return redirect('/')
 
 
 def error404(request, exception):

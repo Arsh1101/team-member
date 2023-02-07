@@ -65,7 +65,7 @@ Edit page
                     {% comment %} Admin have access to reset users password. {% endcomment %}
                     {% if object.email != user.email %}
                     <div class="col-4 text-center">
-                        <button class="button border rounded-1 py-2 px-4 bg-dark text-light" type="button" onclick="location.href='/';">Reset password</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-dark text-light" type="button" onclick="location.href='{% url 'users:reset_password' object.id %}';">Reset password</button>
                     </div>
                     {% else %}
                     {% comment %} Admin user can change his/her own password. {% endcomment %}
