@@ -1,7 +1,7 @@
 from .models import CustomUser
 from django.views import generic
 from django.urls import reverse_lazy
-from .forms import CustomUserCreationForm, CustomUserEditForm, AutoGenPassCustomUserCreationForm, generate_password
+from .forms import CustomUserEditForm, AutoGenPassCustomUserCreationForm, generate_password
 #
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
@@ -21,7 +21,6 @@ class IndexView(generic.ListView):
 
 
 class AddMemberView(generic.CreateView):
-    #form_class = CustomUserCreationForm
     form_class = AutoGenPassCustomUserCreationForm
     success_url = reverse_lazy("users:index")
     template_name = "users/form.html"
