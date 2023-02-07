@@ -57,6 +57,7 @@ class AutoGenPassCustomUserCreationForm(CustomUserCreationForm):
         self.fields['password2'].widget = self.fields['password2'].hidden_widget()
         # del self.fields['password1']
         # del self.fields['password2']
+        
     
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -81,6 +82,7 @@ class CustomUserEditForm(UserChangeForm):
 
 
     def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
         super(CustomUserEditForm, self).__init__(*args, **kwargs)
 
         TEAM_ROLLS = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLLS[::-1]]
@@ -91,3 +93,13 @@ class CustomUserEditForm(UserChangeForm):
             if visible.auto_id != "id_team_role":
                 visible.field.widget.attrs['class'] = 'form-control'
                 visible.field.widget.attrs['placeholder'] = visible.field.label
+            if visible.auto_id == "id_email" and self.user.email != visible.value():
+                self.fields['email'].widget.attrs['readonly'] = True
+    
+    # Check the real only email fild, stays readonly.
+    def clean_email(self):
+        instance = getattr(self, 'instance', None)
+        if instance.email != self.user.email and instance and instance.pk:
+            return instance.email
+        else:
+            return self.cleaned_data['email']

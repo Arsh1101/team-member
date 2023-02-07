@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}
+Login
+{% endblock %}
+{% block header %}
+Login page
+{% endblock %}
+{% block body %}
+<div class="container bg-white">
+  <form class="row fs-6 text-center" method="post">
+    {% for field in form.visible_fields  %}
+    {% csrf_token %}
+    <div class="col-md-6 col-12 py-3">
+      {{ field.label_tag }}
+      {{ field }}
+      <span class="text-danger">{{ field.errors }}</span>    
+    </div>
+    {% endfor %}
+    <div class="col-12 text-center">
+      <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Log in</button>
+  </div>
+  </form>
+</div>
+{% endblock %}

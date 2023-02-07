@@ -4,12 +4,14 @@
 {% block body %}
 <div class="container bg-white">
     <div class="row align-items-center">
-        <div class="col-6 text-start">
-            <a href="/" class="text-muted text-decoration-none fs-3">
-                Login Info
-            </a>
+        <div class="col-10 text-start">
+            {% if user.is_authenticated %}
+            <p class="fs-6 m-auto" >Hello <b>{{ user.first_name }}</b> you can <a href="{% url 'logout' %}">Log Out</a> here.
+            {% else %}   
+            <a href="{% url 'login' %}" class="fs-3">Log In</a>
+            {% endif %}
         </div>
-        <div class="col-6 text-end">
+        <div class="col-2 text-end">
             <a href="{% url 'users:add' %}" class="text-decoration-none text-primary display-5">
                 <i class="bi bi-plus"></i>
             </a>

@@ -1,7 +1,6 @@
 from .models import CustomUser
 from django.views import generic
 from django.urls import reverse_lazy
-
 from .forms import CustomUserCreationForm, CustomUserEditForm, AutoGenPassCustomUserCreationForm
 
 
@@ -27,6 +26,12 @@ class EditMemberView(generic.UpdateView):
     form_class = CustomUserEditForm
     success_url = reverse_lazy("users:index")
     template_name = "users/form.html"
+
+   # Sending user object to the form, to verify which fields to display/remove (depending on group)
+    def get_form_kwargs(self):
+        kwargs = super(EditMemberView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class DeleteMemberView(generic.DeleteView):

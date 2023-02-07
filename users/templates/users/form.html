@@ -23,9 +23,10 @@ Edit page
     <form class="row fs-6" method="post">
         {% csrf_token %}
         {% for field in form.visible_fields  %}
-        {% if object.team_role != 'Admin' and field.auto_id == "id_team_role" %}
+        {% comment %} {% if 'edit' in request.path and user.team_role != 'Admin' and field.auto_id == "id_team_role" %} {% endcomment %}
         {% comment %} It is dangerous to let all the users change the role. {% endcomment %}
-        {% elif field.auto_id == 'id_password' and True%}
+        {% comment %} {% elif field.auto_id == 'id_password'%} {% endcomment %}
+        {% if field.auto_id == 'id_password'%}
         {% comment %} Change password is in other form. {% endcomment %}
         {% else %}
         <div class="col-lg-3 col-md-6 col-12 py-3">
@@ -33,27 +34,46 @@ Edit page
             <b>{{ field.label_tag }}</b>
             {% endif %}
             {{ field }}
-            <span class="text-danger">{{ field.errors }}</span>    
+            <span class="text-danger">{{ field.errors }}</span>
         </div>
         {% endif %}
         {% endfor %}
         <div class="col-12">
             <div class="container">
                 <div class="row py-3">
-                    {% if 'add' in request.path or object.team_role != 'Admin' %}
+                    {% if 'add' in request.path or user.team_role != 'Admin' %}
+                    {% comment %} Regular user can change his/her own password. {% endcomment %}
+                    {% if object.email == user.email %}
+                    <div class="col-6 text-center">
+                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='/';">Change password</button>
+                    </div>
+                    <div class="col-6 text-center">
+                        <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
+                    </div>
+                    {% comment %} Regular user can not change his/her own password. {% endcomment %}
+                    {% else %}
                     <div class="col-12 text-end">
                         <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
                     </div>
+                    {% endif %}
                     {% else %}
+                    {% comment %} Admin have access to delete users. {% endcomment %}
+                    {% if user.team_role == 'Admin' %}
                     <div class="col-4 text-start">
                         <button class="button border rounded-1 py-2 px-4 bg-white text-danger" type="button" onclick="location.href='{% url 'users:delete' object.id %}';">Delete</button>
                     </div>
+                    {% comment %} Admin have access to reset users password. {% endcomment %}
+                    {% if object.email != user.email %}
                     <div class="col-4 text-center">
-                        <button class="button border rounded-1 py-2 px-4 bg-dark text-light" type="button" onclick="location.href='/';">Reset Password</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-dark text-light" type="button" onclick="location.href='/';">Reset password</button>
                     </div>
+                    {% else %}
+                    {% comment %} Admin user can change his/her own password. {% endcomment %}
                     <div class="col-4 text-center">
-                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='/';">Reset Password</button>
+                        <button class="button border rounded-1 py-2 px-4 bg-secondary text-light" type="button" onclick="location.href='/';">Change password</button>
                     </div>
+                    {% endif %}
+                    {% endif %}
                     <div class="col-4 text-end">
                         <button class="button border rounded-1 py-2 px-4 bg-primary text-white" type="submit">Save</button>
                     </div>
