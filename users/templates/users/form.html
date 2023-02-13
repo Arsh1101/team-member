@@ -28,6 +28,8 @@ Edit page
         {% comment %} {% elif field.auto_id == 'id_password'%} {% endcomment %}
         {% if field.auto_id == 'id_password'%}
         {% comment %} Change password is in other form. {% endcomment %}
+        {% comment %} {% elif field.auto_id == 'id_team_role' and user.team_role != 'Admin'%} {% endcomment %}
+        {% comment %} Regular user can not change role. {% endcomment %}
         {% else %}
         <div class="col-lg-3 col-md-6 col-12 py-3">
             {% if field.auto_id == "id_team_role" %}

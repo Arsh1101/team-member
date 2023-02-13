@@ -22,7 +22,7 @@ def send_email_password(first_name, user_email, password):
          message = first_name + ". This '" + password + "' is your password.\nPlease change your password as soon as possible." 
          EmailMessage(subject, message, email_from, recipient_list, connection=connection).send()
 
-
+# Splitet into two classes to manage it better.
 class CustomUserCreationForm(UserCreationForm):
 
     class Meta:
@@ -33,9 +33,9 @@ class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
 
-        TEAM_ROLLS = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLLS[::-1]]
-        widget_team_roll = forms.RadioSelect(attrs={ 'class': 'form-check' })
-        self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_roll, choices=TEAM_ROLLS, initial=TEAM_ROLLS[0], required=True)
+        TEAM_ROLES = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLES[::-1]]
+        widget_team_role = forms.RadioSelect(attrs={ 'class': 'form-check' })
+        self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_role, choices=TEAM_ROLES, initial=TEAM_ROLES[0], required=True)
         
         for visible in self.visible_fields():
             if visible.auto_id != "id_team_role":
@@ -86,11 +86,19 @@ class CustomUserEditForm(UserChangeForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')  # To get request.user. Do not use kwargs.pop('user', None) due to potential security hole
         super(CustomUserEditForm, self).__init__(*args, **kwargs)
+        #Regular users can not change the role.
+        if self.user.team_role != "Admin":
+            #TEAM_ROLES = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLES[::-1]]
+            # widget_team_role = forms.RadioSelect(attrs={ 'class': 'form-check', 'disabled': 'disabled' })
+            #widget_team_role = forms.RadioSelect(attrs={ 'class': 'form-check', 'readonly': 'True' })
+            #self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_role, choices=TEAM_ROLES, initial=TEAM_ROLES[0], required=True)
+            # self.fields['team_role'] = forms.ChoiceField(widget=forms.RadioSelect(attrs={'disabled': 'disabled'}))
+            self.fields['team_role'] =  forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+        else:
+            TEAM_ROLES = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLES[::-1]]
+            widget_team_role = forms.RadioSelect(attrs={ 'class': 'form-check' })
+            self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_role, choices=TEAM_ROLES, initial=TEAM_ROLES[0], required=True)
 
-        TEAM_ROLLS = [[item[0], item[0] + " - " + item[1]] for item in CustomUser.TEAM_ROLLS[::-1]]
-        widget_team_roll = forms.RadioSelect(attrs={ 'class': 'form-check' })
-        self.fields['team_role'] = forms.TypedChoiceField(label="Roles", widget=widget_team_roll, choices=TEAM_ROLLS, initial=TEAM_ROLLS[0], required=True)
-        
         for visible in self.visible_fields():
             if visible.auto_id != "id_team_role":
                 visible.field.widget.attrs['class'] = 'form-control'
@@ -105,3 +113,11 @@ class CustomUserEditForm(UserChangeForm):
             return instance.email
         else:
             return self.cleaned_data['email']
+
+    # Check the team role, regular users should not change the role.
+    def clean_team_role(self):
+        instance = getattr(self, 'instance', None)
+        if self.user.team_role != "Admin":
+            return instance.team_role
+        else:
+            return self.cleaned_data['team_role']

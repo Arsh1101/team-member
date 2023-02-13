@@ -6,7 +6,7 @@ from .managers import CustomUserManager
 
 
 class CustomUser(AbstractBaseUser, PermissionsMixin):
-    # I assumed first_name, last_name, email , phone_number, and team_roll should not be blank.
+    # I assumed first_name, last_name, email , phone_number, and team_role should not be blank.
     # If you want to be optional fields, I can change them.
     email = models.EmailField("Email address", unique=True)
     first_name = models.CharField("First name", max_length=150)
@@ -21,14 +21,14 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     # For more complex roles in future we can have a differente table or use django roles.
     ADMIN = "Admin"
     REGULAR = "Regular"
-    TEAM_ROLLS = [ 
+    TEAM_ROLES = [ 
         (ADMIN, "Can delete members"),
         (REGULAR, "Can't delete members"),
         ]
     team_role = models.CharField("Team Role",
         # Automatically set the max value of the keys, to max_length.
-        max_length=max([len(i[0]) for i in TEAM_ROLLS]),
-        choices=TEAM_ROLLS,
+        max_length=max([len(i[0]) for i in TEAM_ROLES]),
+        choices=TEAM_ROLES,
         default=REGULAR,
     )
     #Super user properties.
